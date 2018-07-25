@@ -17,15 +17,16 @@ import com.google.android.gms.ads.MobileAds;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements View.OnClickListener {
+    public static final String TAG = MainActivityFragment.class.getSimpleName();
     private ProgressBar mBar;
     private InterstitialAd mInterstitialAd;
-    public static final String TAG = MainActivityFragment.class.getSimpleName();
+
     public MainActivityFragment () {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
@@ -35,25 +36,25 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         jokeBtn.setOnClickListener(this);
 
         MobileAds.initialize(getContext(),
-                    getString(R.string.banner_add_unit_id));
+            getString(R.string.banner_add_unit_id));
 
         mInterstitialAd = new InterstitialAd(getContext());
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_add_id));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         AdRequest request = new AdRequest.Builder()
-                        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                        .build();
-                mAdView.loadAd(request);
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .build();
+        mAdView.loadAd(request);
 
         return root;
     }
 
     @Override
     public void onClick (View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.joke_btn:
-                if (mInterstitialAd.isLoaded()){
+                if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }
                 new MyEndPointAsyncTask(getContext(), mBar).execute(getContext());

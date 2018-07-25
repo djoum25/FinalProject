@@ -41,14 +41,15 @@ android {
         free {
             dimension "tier"
             applicationId "com.udacity.gradle.builditbigger.free"
+            applicationIdSuffix ".free"
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         }
         paid {
-
             applicationId "com.udacity.gradle.builditbigger.paid"
             testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         }
     }
+
 }
 
 
@@ -59,7 +60,7 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     endpointsServer project(path: ':backend', configuration: 'endpoints')
     implementation 'com.android.support:appcompat-v7:26.1.0'
-//    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
+    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.1'
@@ -69,5 +70,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation project(':MyJokeJavaLibrary')
     implementation project(':my_joke_android_lib')
-    compile 'com.google.android.gms:play-services:12.0.1'
+
 }
+
+//
+//tasks startDevServer{
+//    dependsOn ':bakckend:appengineRun'
+//    evaluationDependsOn("backend")
+//    project(':backend').appengine.daemon = true
+//}
+

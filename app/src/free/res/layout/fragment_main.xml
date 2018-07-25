@@ -13,11 +13,6 @@
         android:layout_height="wrap_content"
         android:text="@string/instructions"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/joke_btn"
-        android:text="this is the free version"/>
 
     <Button
         android:id="@+id/joke_btn"

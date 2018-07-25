@@ -16,6 +16,9 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 import java.io.IOException;
 
 public class MyEndPointAsyncTask extends AsyncTask<Context, Void, String> {
+
+    private MyEndPointAsyncTaskListener mListener;
+    private Exception mException = null;
     private static MyApi sMyApi = null;
     private Context mContext;
     private ProgressBar mProgressBar;
@@ -23,9 +26,6 @@ public class MyEndPointAsyncTask extends AsyncTask<Context, Void, String> {
     public MyEndPointAsyncTask (Context context, ProgressBar progressBar) {
         mContext = context;
         mProgressBar = progressBar;
-    }
-
-    public MyEndPointAsyncTask () {
     }
 
     @Override
@@ -61,11 +61,32 @@ public class MyEndPointAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute (String result) {
+        if (this.mListener != null) {
+            this.mListener.onComplete(result, mException);
+        }
+
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.GONE);
         }
         Intent intent = new Intent(mContext, My_Joke_A_Lib_MainActivity.class);
         intent.putExtra(My_Joke_A_Lib_MainActivity.MY_JOKE_A_LIB_INTENT_KEY, result);
         mContext.startActivity(intent);
+    }
+
+    @Override
+    protected void onCancelled () {
+        if (this.mListener != null) {
+            mException = new InterruptedException("AsynkTask cancelled");
+            this.mListener.onComplete(null, mException);
+        }
+    }
+
+    public MyEndPointAsyncTask setListener (MyEndPointAsyncTaskListener listener) {
+        this.mListener = listener;
+        return this;
+    }
+
+    public interface MyEndPointAsyncTaskListener {
+        void onComplete (String response, Exception e);
     }
 }

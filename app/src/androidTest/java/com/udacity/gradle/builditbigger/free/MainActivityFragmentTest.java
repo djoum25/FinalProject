@@ -1,53 +1,33 @@
 package com.udacity.gradle.builditbigger.free;
 
-import android.app.Application;
-import android.support.test.filters.SmallTest;
-import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
-import android.test.ApplicationTestCase;
 import android.util.Log;
 
-import com.udacity.gradle.builditbigger.MyEndPointAsyncTask;
+import com.udacity.gradle.builditbigger.MyEndPointAsynckTask;
 
-import org.junit.runner.RunWith;
-
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-@RunWith(AndroidJUnit4.class)
-public class MainActivityFragmentTest extends ApplicationTestCase<Application>
-        implements MyEndPointAsyncTask.MyEndPointAsyncTaskListener {
+
+/*
+    Credit goes to - Chiu-Ki Chan - from Lynda.com in Effective Android Testing for Mobile Developers
+ */
+
+public class MainActivityFragmentTest extends AndroidTestCase {
 
     private static final String TAG = MainActivityFragmentTest.class.getSimpleName();
-    private CountDownLatch signal;
-    private String myJoke;
 
-    public MainActivityFragmentTest(Class<Application> applicationClass) {
-        super(applicationClass);
-        Log.d(TAG, "MainActivityFragmentTest is called");
+    public void test() throws InterruptedException, ExecutionException, TimeoutException {
+
+        String result = new MyEndPointAsynckTask(null, null)
+                .execute(getContext()).get(20, TimeUnit.SECONDS);
+
+        Log.d(TAG, "test " + result);
+
+        assertNotNull(result);
+        assertFalse(result.length() == 0);
+
     }
 
-    @SmallTest
-    public void testForEmptyString() {
-        Log.d(TAG, "testForEmptyString is called");
-        try {
-            signal = new CountDownLatch(1);
-            new MyEndPointAsyncTask(getContext(), null).execute();
-            signal.await(10, TimeUnit.SECONDS);
-            assertNotNull(myJoke);
-            assertFalse(myJoke.isEmpty());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void onComplete(String response, Exception e) {
-        Log.d(TAG, "onComplete: " + response);
-        this.myJoke = response;
-        signal.countDown();
-    }
 }
-

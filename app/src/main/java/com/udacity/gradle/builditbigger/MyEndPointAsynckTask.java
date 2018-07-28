@@ -2,7 +2,6 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -14,15 +13,19 @@ import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
 
-public class MySecondEndPointAsynckTask extends AsyncTask<Context, Void, String>{
-    private static final String TAG = MySecondEndPointAsynckTask.class.getSimpleName();
-    private static  MyApi myApi = null;
-    private Context mContext;
+
+/*
+    Credit goes to - Chiu-Ki Chan - from Lynda.com in Effective Android Testing for Mobile Developers
+ */
+
+public class MyEndPointAsynckTask extends AsyncTask<Context, Void, String> {
+    private static final String TAG = MyEndPointAsynckTask.class.getSimpleName();
+    private static MyApi myApi = null;
     private CallBack mCallback;
     private ProgressBar mProgressBar;
 
-    // TODO: 7/27/18 remember to remove this
-    public MySecondEndPointAsynckTask(MainActivityFragment mCallback, ProgressBar progressBar) {
+
+    public MyEndPointAsynckTask(MainActivityFragment mCallback, ProgressBar progressBar) {
         this.mCallback = (CallBack) mCallback;
         this.mProgressBar = progressBar;
     }
@@ -36,19 +39,17 @@ public class MySecondEndPointAsynckTask extends AsyncTask<Context, Void, String>
                     .setRootUrl("http://10.0.2.2:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
-                        public void initialize (AbstractGoogleClientRequest<?> request) {
+                        public void initialize(AbstractGoogleClientRequest<?> request) {
                             request.setDisableGZipContent(true);
                         }
                     });
             myApi = builder.build();
         }
-        mContext=contexts[0];
 
         try {
             return myApi.sendAJoke().execute().getJokes();
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(TAG, "doInBackground " + e.getMessage());
             return e.getMessage();
         }
     }
@@ -63,7 +64,7 @@ public class MySecondEndPointAsynckTask extends AsyncTask<Context, Void, String>
 
     @Override
     protected void onPostExecute(String s) {
-        if (mCallback != null && !s.isEmpty()){
+        if (mCallback != null && !s.isEmpty()) {
             mCallback.onCallBack(s);
         }
 
@@ -72,7 +73,7 @@ public class MySecondEndPointAsynckTask extends AsyncTask<Context, Void, String>
         }
     }
 
-    public interface CallBack{
+    public interface CallBack {
         void onCallBack(String result);
     }
 }

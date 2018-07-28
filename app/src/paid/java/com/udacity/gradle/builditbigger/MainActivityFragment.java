@@ -16,15 +16,15 @@ import com.laurent_julien_nano_degree_project.my_joke_android_lib.My_Joke_A_Lib_
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment implements View.OnClickListener,
-        MySecondEndPointAsynckTask.CallBack {
+        MyEndPointAsynckTask.CallBack {
     private ProgressBar mBar;
 
-    public MainActivityFragment () {
+    public MainActivityFragment() {
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         mBar = root.findViewById(R.id.progressBar2);
         mBar.setVisibility(View.GONE);
@@ -34,11 +34,10 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onClick (View v) {
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.joke_btn:
-                //new MyEndPointAsyncTask(getContext(), mBar).execute(getContext());
-                new MySecondEndPointAsynckTask(this, mBar).execute(getActivity());
+                new MyEndPointAsynckTask(this, mBar).execute(getActivity());
                 break;
         }
     }

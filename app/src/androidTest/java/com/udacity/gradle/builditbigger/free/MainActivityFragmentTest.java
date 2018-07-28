@@ -1,72 +1,53 @@
 package com.udacity.gradle.builditbigger.free;
 
+import android.app.Application;
+import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
+import android.test.ApplicationTestCase;
+import android.util.Log;
 
 import com.udacity.gradle.builditbigger.MyEndPointAsyncTask;
 
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityFragmentTest extends AndroidTestCase {
+public class MainActivityFragmentTest extends ApplicationTestCase<Application>
+        implements MyEndPointAsyncTask.MyEndPointAsyncTaskListener {
 
     private static final String TAG = MainActivityFragmentTest.class.getSimpleName();
+    private CountDownLatch signal;
+    private String myJoke;
 
-    String reSultString = null;
-    Exception mException = null;
-    CountDownLatch signal = null;
-
-    @Override
-    protected void setUp () throws Exception {
-        super.setUp();
-        signal = new CountDownLatch(1);
+    public MainActivityFragmentTest(Class<Application> applicationClass) {
+        super(applicationClass);
+        Log.d(TAG, "MainActivityFragmentTest is called");
     }
 
+    @SmallTest
+    public void testForEmptyString() {
+        Log.d(TAG, "testForEmptyString is called");
+        try {
+            signal = new CountDownLatch(1);
+            new MyEndPointAsyncTask(getContext(), null).execute();
+            signal.await(10, TimeUnit.SECONDS);
+            assertNotNull(myJoke);
+            assertFalse(myJoke.isEmpty());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
-    protected void tearDown () throws Exception {
-        super.tearDown();
+    public void onComplete(String response, Exception e) {
+        Log.d(TAG, "onComplete: " + response);
+        this.myJoke = response;
         signal.countDown();
     }
-
-    public void testAsyncTask () throws InterruptedException {
-        MyEndPointAsyncTask task = new MyEndPointAsyncTask(getContext(), null);
-        task.setListener(new MyEndPointAsyncTask.MyEndPointAsyncTaskListener() {
-            @Override
-            public void onComplete (String response, Exception e) {
-                reSultString = response;
-                mException = e;
-                signal.countDown();
-            }
-        }).execute();
-        signal.await(10, TimeUnit.SECONDS);
-
-        assertNotNull(reSultString);
-    }
-
-    //    public void testForEmpty () {
-//        Log.d(TAG, "testForEmpty start here");
-//        String test = null;
-//        MyEndPointAsyncTask task = new MyEndPointAsyncTask(getContext(), null);
-//        task.execute();
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            test = task.get();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//        Log.d(TAG, "Retrieved a non-empty string successfully: " + test);
-//
-//        assertNotNull(test);
-//    }
-
 }
 

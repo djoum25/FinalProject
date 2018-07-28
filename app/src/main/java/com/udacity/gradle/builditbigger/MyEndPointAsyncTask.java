@@ -3,8 +3,10 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 public class MyEndPointAsyncTask extends AsyncTask<Context, Void, String> {
 
+    private static final String TAG = null;
     private MyEndPointAsyncTaskListener mListener;
     private Exception mException = null;
     private static MyApi sMyApi = null;
@@ -61,8 +64,10 @@ public class MyEndPointAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute (String result) {
-        if (this.mListener != null) {
+        //Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+        if (this.mListener != null & !result.isEmpty()) {
             this.mListener.onComplete(result, mException);
+            Log.d(TAG, "onPostExecute " + result);
         }
 
         if (mProgressBar != null) {

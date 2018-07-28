@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.laurent_julien_nano_degree_project.my_joke_android_lib.My_Joke_A_Lib_MainActivity;
+import com.laurent_julien_nano_degree_project.my_joke_android_lib.JokeAndroidActivityLibrary;
 
 
 /**
@@ -44,8 +44,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onCallBack(String result) {
-        Intent intent = new Intent(getActivity(), My_Joke_A_Lib_MainActivity.class);
-        intent.putExtra(My_Joke_A_Lib_MainActivity.MY_JOKE_A_LIB_INTENT_KEY, result);
+        Intent intent = new Intent(getActivity(), JokeAndroidActivityLibrary.class);
+        intent.putExtra(JokeAndroidActivityLibrary.MY_JOKE_A_LIB_INTENT_KEY, result);
         startActivity(intent);
     }
 }

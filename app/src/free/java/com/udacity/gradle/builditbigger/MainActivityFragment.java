@@ -13,7 +13,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.laurent_julien_nano_degree_project.my_joke_android_lib.My_Joke_A_Lib_MainActivity;
+import com.laurent_julien_nano_degree_project.my_joke_android_lib.JokeAndroidActivityLibrary;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -23,7 +23,6 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public static final String TAG = MainActivityFragment.class.getSimpleName();
     private ProgressBar mBar;
     private InterstitialAd mInterstitialAd;
-
     public MainActivityFragment() {
     }
 
@@ -37,7 +36,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mBar.setVisibility(View.GONE);
         Button jokeBtn = root.findViewById(R.id.joke_btn);
         jokeBtn.setOnClickListener(this);
-
+        
         MobileAds.initialize(getContext(),
                 getString(R.string.banner_add_unit_id));
 
@@ -67,8 +66,8 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onCallBack(String result) {
-        Intent intent = new Intent(getActivity(), My_Joke_A_Lib_MainActivity.class);
-        intent.putExtra(My_Joke_A_Lib_MainActivity.MY_JOKE_A_LIB_INTENT_KEY, result);
+        Intent intent = new Intent(getActivity(), JokeAndroidActivityLibrary.class);
+        intent.putExtra(JokeAndroidActivityLibrary.MY_JOKE_A_LIB_INTENT_KEY, result);
         startActivity(intent);
     }
 }

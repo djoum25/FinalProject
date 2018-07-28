@@ -8,13 +8,11 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+    
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, new MainActivityFragment())
                 .commit();
@@ -29,15 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    
     }
     
 }

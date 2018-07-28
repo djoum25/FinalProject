@@ -3,7 +3,6 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.laurent_julien_nano_degree_project.myjokejavalibrary.My_Joke_Java_Library_Java_Class;
 
 import javax.inject.Named;
 
@@ -40,7 +39,7 @@ public class MyEndpoint {
 
     class MyJokeToSendClass {
         public String getJokes () {
-            return new My_Joke_Java_Library_Java_Class().getJoke2();
+            return new com.laurent_julien_nano_degree_project.myjokejavalibrary.JokeLibraryJavaClass().getJoke2();
         }
     }
 
